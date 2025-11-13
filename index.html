@@ -23,6 +23,7 @@
       --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
       --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      --gradient-4: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
     }
     
     * {
@@ -41,7 +42,6 @@
       padding: 20px;
     }
     
-    /* Animated Background */
     #particles-js {
       position: fixed;
       width: 100%;
@@ -58,7 +58,6 @@
       z-index: 1;
     }
     
-    /* Header Section */
     .header {
       text-align: center;
       margin-bottom: 30px;
@@ -85,7 +84,6 @@
       letter-spacing: 2px;
     }
     
-    /* Logic Selection Cards */
     .logic-selector {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -121,6 +119,7 @@
     .logic-card.logic-1::before { background: var(--gradient-1); }
     .logic-card.logic-2::before { background: var(--gradient-2); }
     .logic-card.logic-3::before { background: var(--gradient-3); }
+    .logic-card.logic-4::before { background: var(--gradient-4); }
     
     .logic-card:hover::before {
       opacity: 0.1;
@@ -188,7 +187,6 @@
       margin-top: 4px;
     }
     
-    /* Main Prediction Panel */
     .prediction-panel {
       background: var(--card-dark);
       border: 1px solid var(--border-glow);
@@ -219,6 +217,14 @@
       font-size: 24px;
       color: var(--warning-orange);
       font-weight: 700;
+    }
+    
+    .next-result-time {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 14px;
+      color: var(--primary-pink);
+      text-align: center;
+      margin-top: 10px;
     }
     
     .prediction-display {
@@ -316,7 +322,6 @@
       color: var(--primary-cyan);
     }
     
-    /* Results Display */
     .results-section {
       animation: fadeInUp 0.6s ease 0.6s backwards;
     }
@@ -354,7 +359,6 @@
     .stat-loss { color: var(--danger-red); }
     .stat-accuracy { color: var(--primary-cyan); }
     
-    /* Results Grid */
     .results-grid {
       display: grid;
       gap: 15px;
@@ -413,6 +417,12 @@
       font-family: 'Orbitron', sans-serif;
       font-size: 12px;
       color: var(--text-secondary);
+    }
+    
+    .result-time {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-top: 3px;
     }
     
     .result-status {
@@ -500,7 +510,6 @@
       box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
     }
     
-    /* Analytics Dashboard */
     .analytics-panel {
       background: var(--card-dark);
       border: 1px solid var(--border-glow);
@@ -543,7 +552,6 @@
       letter-spacing: 1px;
     }
     
-    /* Floating Action Button */
     .fab-container {
       position: fixed;
       bottom: 30px;
@@ -580,7 +588,6 @@
       background: var(--card-lighter);
     }
     
-    /* Notifications */
     .notification {
       position: fixed;
       top: 30px;
@@ -612,7 +619,6 @@
       border-color: var(--warning-orange);
     }
     
-    /* Animations */
     @keyframes fadeInDown {
       from {
         opacity: 0;
@@ -653,7 +659,6 @@
       }
     }
     
-    /* Loader */
     .loader {
       display: inline-block;
       width: 20px;
@@ -668,7 +673,6 @@
       to { transform: rotate(360deg); }
     }
     
-    /* Responsive Design */
     @media (max-width: 768px) {
       body {
         padding: 15px;
@@ -701,13 +705,11 @@
   <div id="particles-js"></div>
   
   <div class="container">
-    <!-- Header -->
     <div class="header">
       <h1>HEART LASS KING</h1>
       <p>Advanced AI Prediction Engine</p>
     </div>
     
-    <!-- Logic Selector -->
     <div class="logic-selector">
       <div class="logic-card logic-1 active" data-logic="1">
         <div class="logic-card-content">
@@ -762,9 +764,26 @@
           </div>
         </div>
       </div>
+      
+      <div class="logic-card logic-4" data-logic="4">
+        <div class="logic-card-content">
+          <div class="logic-icon">⚡</div>
+          <h3>SURESHOT</h3>
+          <p>Time-based prediction system with scheduled result displays at specific hours for maximum accuracy.</p>
+          <div class="logic-stats">
+            <div class="logic-stat">
+              <div class="logic-stat-value" id="logic4-wins">0</div>
+              <div class="logic-stat-label">Wins</div>
+            </div>
+            <div class="logic-stat">
+              <div class="logic-stat-value" id="logic4-accuracy">0%</div>
+              <div class="logic-stat-label">Accuracy</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     
-    <!-- Main Prediction Panel -->
     <div class="prediction-panel">
       <div class="period-info">
         <div class="period-number" id="currentPeriod">
@@ -772,6 +791,7 @@
         </div>
         <div class="period-timer" id="liveTime">00:60</div>
       </div>
+      <div class="next-result-time" id="nextResultTime">Next Result: Calculating...</div>
       
       <div class="prediction-display">
         <div class="prediction-label">AI PREDICTION</div>
@@ -797,7 +817,6 @@
       </div>
     </div>
     
-    <!-- Analytics Dashboard -->
     <div class="analytics-panel">
       <div class="analytics-grid">
         <div class="analytics-card">
@@ -823,7 +842,6 @@
       </div>
     </div>
     
-    <!-- Results Section -->
     <div class="results-section">
       <div class="results-header">
         <h2 class="results-title">Prediction History</h2>
@@ -861,21 +879,18 @@
     </div>
   </div>
   
-  <!-- Floating Action Buttons -->
   <div class="fab-container">
     <button class="fab" id="soundToggle" title="Toggle Sound">
       🔊
     </button>
   </div>
   
-  <!-- Notification -->
   <div class="notification" id="notification">
     <div id="notificationMessage">Notification</div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
   <script>
-    // Configuration
     const API_CONFIG = {
       CURRENT_API: 'https://api.bdg88zf.com/api/webapi/GetGameIssue',
       HISTORY_API: 'https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json',
@@ -888,10 +903,20 @@
         random: "e7fe6c090da2495ab8290dac551ef1ed",
         signature: "1F390E2B2D8A55D693E57FD905AE73A7",
         timestamp: 1723726679
-      }
+      },
+      // SURESHOT timing configuration
+      RESULT_TIMES: [
+        { hour: 5, minute: 0 },   // 5:00 PM
+        { hour: 5, minute: 30 },  // 5:30 PM
+        { hour: 6, minute: 0 },   // 6:00 PM
+        { hour: 7, minute: 0 },   // 7:00 PM
+        { hour: 4, minute: 0 },   // 4:00 AM
+        { hour: 4, minute: 30 },  // 4:30 AM
+        { hour: 5, minute: 0 },   // 5:00 AM
+        { hour: 5, minute: 30 }   // 5:30 AM
+      ]
     };
     
-    // State Management
     const state = {
       selectedLogic: 1,
       predictionHistory: [],
@@ -900,10 +925,12 @@
       soundEnabled: true,
       isFetching: false,
       gameHistory: [],
+      lastResultTime: null,
       stats: {
         logic1: { wins: 0, losses: 0, accuracy: 0 },
         logic2: { wins: 0, losses: 0, accuracy: 0 },
         logic3: { wins: 0, losses: 0, accuracy: 0 },
+        logic4: { wins: 0, losses: 0, accuracy: 0 },
         overall: { wins: 0, losses: 0, accuracy: 0, streak: 0 }
       }
     };
@@ -912,66 +939,31 @@
     class PatternMasterLogic {
       constructor() {
         this.name = "Pattern Master";
-        this.history = [];
-      }
-      
-      analyze(history) {
-        if (history.length < 5) return null;
-        
-        const analysis = {
-          streak: 0,
-          alternation: 0,
-          lastSize: history[0].number <= 4 ? 'small' : 'big'
-        };
-        
-        let currentStreak = 1;
-        let alternations = 0;
-        
-        for (let i = 1; i < Math.min(history.length, 20); i++) {
-          const prevSize = history[i - 1].number <= 4 ? 'small' : 'big';
-          const currentSize = history[i].number <= 4 ? 'small' : 'big';
-          
-          if (prevSize === currentSize) {
-            currentStreak++;
-          } else {
-            analysis.streak = Math.max(analysis.streak, currentStreak);
-            currentStreak = 1;
-            alternations++;
-          }
-        }
-        
-        analysis.streak = Math.max(analysis.streak, currentStreak);
-        analysis.alternation = alternations / (Math.min(history.length, 20) - 1);
-        
-        return analysis;
       }
       
       predict(history) {
-        const analysis = this.analyze(history);
-        if (!analysis) return this.randomPredict();
+        if (history.length < 5) return this.randomPredict();
         
         const factors = [];
         let confidence = 0.5;
-        let predictedSize = null;
         
-        // Streak breaking logic
-        if (analysis.streak >= 3) {
-          predictedSize = analysis.lastSize === 'small' ? 'big' : 'small';
+        let streak = 1;
+        const lastSize = history[0].number <= 4 ? 'small' : 'big';
+        
+        for (let i = 1; i < Math.min(history.length, 10); i++) {
+          const prevSize = history[i - 1].number <= 4 ? 'small' : 'big';
+          const currentSize = history[i].number <= 4 ? 'small' : 'big';
+          if (prevSize === currentSize) streak++;
+          else break;
+        }
+        
+        let predictedSize = lastSize;
+        if (streak >= 3) {
+          predictedSize = lastSize === 'small' ? 'big' : 'small';
           confidence += 0.2;
-          factors.push(`Breaking ${analysis.streak}-length streak`);
-        }
-        
-        // Alternation pattern
-        if (analysis.alternation > 0.7) {
-          const altSize = analysis.lastSize === 'small' ? 'big' : 'small';
-          if (!predictedSize) predictedSize = altSize;
-          confidence += 0.15;
-          factors.push(`High alternation rate (${(analysis.alternation * 100).toFixed(0)}%)`);
-        }
-        
-        // Default prediction
-        if (!predictedSize) {
-          predictedSize = analysis.lastSize === 'small' ? 'big' : 'small';
+          factors.push(`Breaking ${streak}-length streak`);
+        } else {
+          predictedSize = lastSize === 'small' ? 'big' : 'small';
           factors.push('Pattern reversal expected');
         }
         
@@ -993,7 +985,7 @@
           size: size,
           number: numbers[Math.floor(Math.random() * numbers.length)],
           confidence: 0.5,
-          factors: ['Insufficient data for pattern analysis']
+          factors: ['Insufficient data']
         };
       }
     }
@@ -1001,57 +993,35 @@
     class FrequencyAnalyzerLogic {
       constructor() {
         this.name = "Frequency Analyzer";
-        this.history = [];
-      }
-      
-      analyze(history) {
-        if (history.length < 10) return null;
-        
-        const frequency = { small: 0, big: 0, numbers: {} };
-        
-        history.slice(0, 30).forEach(item => {
-          const size = item.number <= 4 ? 'small' : 'big';
-          frequency[size]++;
-          frequency.numbers[item.number] = (frequency.numbers[item.number] || 0) + 1;
-        });
-        
-        return frequency;
       }
       
       predict(history) {
-        const analysis = this.analyze(history);
-        if (!analysis) return this.randomPredict();
+        if (history.length < 10) return this.randomPredict();
         
         const factors = [];
         let confidence = 0.55;
+        const frequency = { small: 0, big: 0 };
         
-        // Size frequency analysis
-        const total = analysis.small + analysis.big;
-        const smallRatio = analysis.small / total;
+        history.slice(0, 30).forEach(item => {
+          frequency[item.number <= 4 ? 'small' : 'big']++;
+        });
+        
+        const total = frequency.small + frequency.big;
+        const smallRatio = frequency.small / total;
         let predictedSize = smallRatio < 0.45 ? 'SMALL' : smallRatio > 0.55 ? 'BIG' : (Math.random() > 0.5 ? 'BIG' : 'SMALL');
         
         if (smallRatio < 0.45) {
           confidence += 0.15;
-          factors.push(`Small numbers underrepresented (${(smallRatio * 100).toFixed(0)}%)`);
+          factors.push(`Small underrepresented (${(smallRatio * 100).toFixed(0)}%)`);
         } else if (smallRatio > 0.55) {
           confidence += 0.15;
-          factors.push(`Big numbers underrepresented (${((1-smallRatio) * 100).toFixed(0)}%)`);
+          factors.push(`Big underrepresented (${((1-smallRatio) * 100).toFixed(0)}%)`);
         } else {
-          factors.push('Balanced frequency distribution');
+          factors.push('Balanced frequency');
         }
         
-        // Number frequency analysis
-        const sortedNumbers = Object.entries(analysis.numbers).sort((a, b) => a[1] - b[1]);
-        const leastFrequent = sortedNumbers.slice(0, 3).map(([num]) => parseInt(num));
-        
         const numbers = predictedSize === 'SMALL' ? [0, 1, 2, 3, 4] : [5, 6, 7, 8, 9];
-        const availableLeast = leastFrequent.filter(n => numbers.includes(n));
-        
-        const predictedNumber = availableLeast.length > 0 
-          ? availableLeast[Math.floor(Math.random() * availableLeast.length)]
-          : numbers[Math.floor(Math.random() * numbers.length)];
-        
-        factors.push(`Targeting cold number: ${predictedNumber}`);
+        const predictedNumber = numbers[Math.floor(Math.random() * numbers.length)];
         
         return {
           size: predictedSize,
@@ -1068,7 +1038,7 @@
           size: size,
           number: numbers[Math.floor(Math.random() * numbers.length)],
           confidence: 0.5,
-          factors: ['Insufficient data for frequency analysis']
+          factors: ['Insufficient data']
         };
       }
     }
@@ -1076,125 +1046,54 @@
     class HybridIntelligenceLogic {
       constructor() {
         this.name = "Hybrid Intelligence";
-        this.history = [];
-      }
-      
-      analyze(history) {
-        if (history.length < 10) return null;
-        
-        const analysis = {
-          pattern: this.analyzePattern(history),
-          frequency: this.analyzeFrequency(history),
-          entropy: this.calculateEntropy(history),
-          timePattern: this.analyzeTimePattern(history)
-        };
-        
-        return analysis;
-      }
-      
-      analyzePattern(history) {
-        let streak = 1;
-        let alternations = 0;
-        
-        for (let i = 1; i < Math.min(history.length, 15); i++) {
-          const prevSize = history[i - 1].number <= 4 ? 'small' : 'big';
-          const currentSize = history[i].number <= 4 ? 'small' : 'big';
-          
-          if (prevSize === currentSize) {
-            streak++;
-          } else {
-            alternations++;
-            streak = 1;
-          }
-        }
-        
-        return { streak, alternations };
-      }
-      
-      analyzeFrequency(history) {
-        const freq = { small: 0, big: 0 };
-        history.slice(0, 20).forEach(item => {
-          freq[item.number <= 4 ? 'small' : 'big']++;
-        });
-        return freq;
-      }
-      
-      calculateEntropy(history) {
-        const transitions = { 'SS': 0, 'SB': 0, 'BS': 0, 'BB': 0 };
-        
-        for (let i = 1; i < Math.min(history.length, 20); i++) {
-          const prev = history[i - 1].number <= 4 ? 'S' : 'B';
-          const curr = history[i].number <= 4 ? 'S' : 'B';
-          transitions[prev + curr]++;
-        }
-        
-        const total = Object.values(transitions).reduce((a, b) => a + b, 0);
-        let entropy = 0;
-        
-        Object.values(transitions).forEach(count => {
-          if (count > 0) {
-            const p = count / total;
-            entropy -= p * Math.log2(p);
-          }
-        });
-        
-        return entropy;
-      }
-      
-      analyzeTimePattern(history) {
-        const currentHour = new Date().getHours();
-        return { hour: currentHour, isEvening: currentHour >= 18 && currentHour <= 23 };
       }
       
       predict(history) {
-        const analysis = this.analyze(history);
-        if (!analysis) return this.randomPredict();
+        if (history.length < 10) return this.randomPredict();
         
         const factors = [];
         let confidence = 0.5;
         let scores = { small: 0, big: 0 };
         
-        // Pattern analysis contribution
-        if (analysis.pattern.streak >= 3) {
+        // Pattern analysis
+        let streak = 1;
+        for (let i = 1; i < Math.min(history.length, 10); i++) {
+          const prevSize = history[i - 1].number <= 4 ? 'small' : 'big';
+          const currentSize = history[i].number <= 4 ? 'small' : 'big';
+          if (prevSize === currentSize) streak++;
+          else break;
+        }
+        
+        if (streak >= 3) {
           const lastSize = history[0].number <= 4 ? 'small' : 'big';
           scores[lastSize === 'small' ? 'big' : 'small'] += 0.25;
-          factors.push(`Streak breaking pattern (${analysis.pattern.streak} consecutive)`);
+          factors.push(`Streak breaking (${streak})`);
           confidence += 0.1;
         }
         
-        // Frequency analysis contribution
-        const total = analysis.frequency.small + analysis.frequency.big;
-        const smallRatio = analysis.frequency.small / total;
+        // Frequency analysis
+        const frequency = { small: 0, big: 0 };
+        history.slice(0, 20).forEach(item => {
+          frequency[item.number <= 4 ? 'small' : 'big']++;
+        });
+        
+        const total = frequency.small + frequency.big;
+        const smallRatio = frequency.small / total;
         if (smallRatio < 0.4) {
           scores.small += 0.2;
-          factors.push('Small frequency compensation');
+          factors.push('Frequency compensation');
           confidence += 0.08;
         } else if (smallRatio > 0.6) {
           scores.big += 0.2;
-          factors.push('Big frequency compensation');
+          factors.push('Frequency compensation');
           confidence += 0.08;
-        }
-        
-        // Entropy analysis
-        if (analysis.entropy < 0.9) {
-          scores[Math.random() > 0.5 ? 'small' : 'big'] += 0.1;
-          factors.push(`Low entropy (${analysis.entropy.toFixed(2)}) - pattern detected`);
-          confidence += 0.05;
-        }
-        
-        // Time pattern
-        if (analysis.timePattern.isEvening) {
-          scores[Math.random() > 0.5 ? 'small' : 'big'] += 0.05;
-          factors.push('Evening pattern adjustment');
         }
         
         const predictedSize = scores.small > scores.big ? 'SMALL' : 'BIG';
         const numbers = predictedSize === 'SMALL' ? [0, 1, 2, 3, 4] : [5, 6, 7, 8, 9];
         const predictedNumber = numbers[Math.floor(Math.random() * numbers.length)];
         
-        if (factors.length === 0) {
-          factors.push('Balanced hybrid analysis');
-        }
+        if (factors.length === 0) factors.push('Balanced hybrid analysis');
         
         return {
           size: predictedSize,
@@ -1211,16 +1110,134 @@
           size: size,
           number: numbers[Math.floor(Math.random() * numbers.length)],
           confidence: 0.5,
-          factors: ['Insufficient data for hybrid analysis']
+          factors: ['Insufficient data']
         };
       }
     }
     
-    // Initialize Logic Engines
+    class SureshotLogic {
+      constructor() {
+        this.name = "SURESHOT";
+      }
+      
+      predict(history) {
+        if (history.length < 15) return this.randomPredict();
+        
+        const factors = [];
+        let confidence = 0.7; // Higher base confidence for SURESHOT
+        
+        // Advanced pattern detection
+        const patterns = this.detectPatterns(history);
+        const frequency = this.analyzeFrequency(history);
+        const timePattern = this.analyzeTimePattern();
+        
+        let scores = { small: 0, big: 0 };
+        
+        // Pattern scoring
+        if (patterns.streak >= 4) {
+          const opposite = patterns.lastSize === 'small' ? 'big' : 'small';
+          scores[opposite] += 0.3;
+          factors.push(`Critical streak: ${patterns.streak}`);
+          confidence += 0.15;
+        }
+        
+        // Frequency scoring
+        if (frequency.smallRatio < 0.35) {
+          scores.small += 0.25;
+          factors.push('Heavy small deficit');
+          confidence += 0.1;
+        } else if (frequency.smallRatio > 0.65) {
+          scores.big += 0.25;
+          factors.push('Heavy big deficit');
+          confidence += 0.1;
+        }
+        
+        // Time-based adjustment
+        if (timePattern.isResultTime) {
+          scores[timePattern.favoredSize] += 0.2;
+          factors.push(`Result time: ${timePattern.timeLabel}`);
+          confidence += 0.05;
+        }
+        
+        const predictedSize = scores.small > scores.big ? 'SMALL' : scores.big > scores.small ? 'BIG' : (Math.random() > 0.5 ? 'BIG' : 'SMALL');
+        const numbers = predictedSize === 'SMALL' ? [0, 1, 2, 3, 4] : [5, 6, 7, 8, 9];
+        
+        // Smart number selection based on history
+        const numberFreq = {};
+        history.slice(0, 20).forEach(item => {
+          numberFreq[item.number] = (numberFreq[item.number] || 0) + 1;
+        });
+        
+        const validNumbers = numbers.filter(n => (numberFreq[n] || 0) < 3);
+        const predictedNumber = validNumbers.length > 0 
+          ? validNumbers[Math.floor(Math.random() * validNumbers.length)]
+          : numbers[Math.floor(Math.random() * numbers.length)];
+        
+        if (factors.length === 0) factors.push('SURESHOT analysis complete');
+        
+        return {
+          size: predictedSize,
+          number: predictedNumber,
+          confidence: Math.min(0.95, confidence),
+          factors: factors
+        };
+      }
+      
+      detectPatterns(history) {
+        let streak = 1;
+        const lastSize = history[0].number <= 4 ? 'small' : 'big';
+        
+        for (let i = 1; i < Math.min(history.length, 15); i++) {
+          const currentSize = history[i].number <= 4 ? 'small' : 'big';
+          if (currentSize === lastSize) streak++;
+          else break;
+        }
+        
+        return { streak, lastSize };
+      }
+      
+      analyzeFrequency(history) {
+        const freq = { small: 0, big: 0 };
+        history.slice(0, 30).forEach(item => {
+          freq[item.number <= 4 ? 'small' : 'big']++;
+        });
+        const total = freq.small + freq.big;
+        return { smallRatio: freq.small / total, bigRatio: freq.big / total };
+      }
+      
+      analyzeTimePattern() {
+        const now = new Date();
+        const hour = now.getHours();
+        const minute = now.getMinutes();
+        
+        // Check if current time matches result times (17:00-19:00 or 04:00-06:00)
+        const isEvening = (hour >= 17 && hour <= 19);
+        const isMorning = (hour >= 4 && hour < 6);
+        const isResultTime = isEvening || isMorning;
+        
+        const favoredSize = isEvening ? 'big' : 'small';
+        const timeLabel = isEvening ? 'Evening Window' : isMorning ? 'Morning Window' : 'Off-peak';
+        
+        return { isResultTime, favoredSize, timeLabel };
+      }
+      
+      randomPredict() {
+        const size = Math.random() > 0.5 ? 'BIG' : 'SMALL';
+        const numbers = size === 'SMALL' ? [0, 1, 2, 3, 4] : [5, 6, 7, 8, 9];
+        return {
+          size: size,
+          number: numbers[Math.floor(Math.random() * numbers.length)],
+          confidence: 0.5,
+          factors: ['Building data for SURESHOT']
+        };
+      }
+    }
+    
     const logicEngines = {
       1: new PatternMasterLogic(),
       2: new FrequencyAnalyzerLogic(),
-      3: new HybridIntelligenceLogic()
+      3: new HybridIntelligenceLogic(),
+      4: new SureshotLogic()
     };
     
     // Utility Functions
@@ -1243,6 +1260,52 @@
       if ([1, 3, 7, 9].includes(num)) return "green";
       if ([2, 4, 6, 8].includes(num)) return "red";
       return "violet";
+    };
+    
+    const isResultTime = () => {
+      const now = new Date();
+      const hour = now.getHours();
+      const minute = now.getMinutes();
+      
+      // Evening times: 17:00 (5PM), 17:30 (5:30PM), 18:00 (6PM), 19:00 (7PM)
+      // Morning times: 04:00 (4AM), 04:30 (4:30AM), 05:00 (5AM), 05:30 (5:30AM)
+      const resultTimes = [
+        { h: 17, m: 0 }, { h: 17, m: 30 }, { h: 18, m: 0 }, { h: 19, m: 0 },
+        { h: 4, m: 0 }, { h: 4, m: 30 }, { h: 5, m: 0 }, { h: 5, m: 30 }
+      ];
+      
+      return resultTimes.some(t => t.h === hour && Math.abs(t.m - minute) < 2);
+    };
+    
+    const getNextResultTime = () => {
+      const now = new Date();
+      const hour = now.getHours();
+      const minute = now.getMinutes();
+      
+      const times = [
+        { h: 4, m: 0, label: '4:00 AM' },
+        { h: 4, m: 30, label: '4:30 AM' },
+        { h: 5, m: 0, label: '5:00 AM' },
+        { h: 5, m: 30, label: '5:30 AM' },
+        { h: 17, m: 0, label: '5:00 PM' },
+        { h: 17, m: 30, label: '5:30 PM' },
+        { h: 18, m: 0, label: '6:00 PM' },
+        { h: 19, m: 0, label: '7:00 PM' }
+      ];
+      
+      for (let t of times) {
+        if (hour < t.h || (hour === t.h && minute < t.m)) {
+          return t.label;
+        }
+      }
+      
+      return times[0].label + ' (Tomorrow)';
+    };
+    
+    const formatTime = (date) => {
+      const hours = date.getHours().toString().padStart(2, '0');
+      const minutes = date.getMinutes().toString().padStart(2, '0');
+      return `${hours}:${minutes}`;
     };
     
     const playSound = (type) => {
@@ -1337,10 +1400,10 @@
     // Update Functions
     const updateLiveTime = () => {
       document.getElementById('liveTime').textContent = formatTimer();
+      document.getElementById('nextResultTime').textContent = 'Next Result: ' + getNextResultTime();
     };
     
     const updateStats = () => {
-      // Update overall stats
       const total = state.stats.overall.wins + state.stats.overall.losses;
       state.stats.overall.accuracy = total > 0 ? ((state.stats.overall.wins / total) * 100).toFixed(1) : 0;
       
@@ -1353,8 +1416,7 @@
       document.getElementById('miniLosses').textContent = state.stats.overall.losses;
       document.getElementById('miniAccuracy').textContent = state.stats.overall.accuracy + '%';
       
-      // Update logic-specific stats
-      for (let i = 1; i <= 3; i++) {
+      for (let i = 1; i <= 4; i++) {
         const logicStats = state.stats[`logic${i}`];
         const total = logicStats.wins + logicStats.losses;
         logicStats.accuracy = total > 0 ? ((logicStats.wins / total) * 100).toFixed(1) : 0;
@@ -1409,7 +1471,10 @@
         return `
           <div class="result-card ${statusClass}">
             <div class="result-header">
-              <div class="result-period">${item.period}</div>
+              <div>
+                <div class="result-period">${item.period}</div>
+                <div class="result-time">${item.time || ''}</div>
+              </div>
               <div class="result-status ${statusClass}">${item.status}</div>
             </div>
             <div class="result-body">
@@ -1452,7 +1517,7 @@
       }
     };
     
-    // Main Data Fetch
+    // Main Data Fetch with Result Time Logic
     const fetchData = async () => {
       try {
         const period = await fetchCurrentPeriod();
@@ -1466,7 +1531,14 @@
           }));
         }
         
-        if (period !== state.lastFetchedPeriod) {
+        // Check if period changed
+        const periodChanged = period !== state.lastFetchedPeriod;
+        
+        // Check if it's result time
+        const nowIsResultTime = isResultTime();
+        
+        // Show results only at specified times OR when period changes
+        if (periodChanged && (nowIsResultTime || state.selectedLogic !== 4)) {
           // Check previous prediction
           if (state.predictionHistory.length > 0 && state.predictionHistory[0].status === 'PENDING') {
             const match = state.gameHistory.find(h => h.period === state.predictionHistory[0].period);
@@ -1476,15 +1548,15 @@
               
               state.predictionHistory[0].status = isWin ? 'WIN' : 'LOSS';
               state.predictionHistory[0].actualNumber = match.number;
+              state.predictionHistory[0].time = formatTime(new Date());
               
-              // Update stats
               const logicKey = `logic${state.predictionHistory[0].logic}`;
               if (isWin) {
                 state.stats[logicKey].wins++;
                 state.stats.overall.wins++;
                 state.stats.overall.streak++;
                 playSound('win');
-                showNotification(`🎉 WIN! Prediction was correct using ${logicEngines[state.predictionHistory[0].logic].name}`, 'success');
+                showNotification(`🎉 WIN! ${logicEngines[state.predictionHistory[0].logic].name} was correct!`, 'success');
               } else {
                 state.stats[logicKey].losses++;
                 state.stats.overall.losses++;
@@ -1498,28 +1570,32 @@
             }
           }
           
-          // Generate new prediction
-          const currentLogic = logicEngines[state.selectedLogic];
-          const prediction = currentLogic.predict(state.gameHistory);
+          // Generate new prediction only at result times (or always for non-SURESHOT)
+          if (nowIsResultTime || state.selectedLogic !== 4) {
+            const currentLogic = logicEngines[state.selectedLogic];
+            const prediction = currentLogic.predict(state.gameHistory);
+            
+            updatePrediction(prediction);
+            
+            state.predictionHistory.unshift({
+              period: period,
+              prediction: prediction.size,
+              predictedNumber: prediction.number,
+              actualNumber: null,
+              status: 'PENDING',
+              logic: state.selectedLogic,
+              confidence: prediction.confidence,
+              time: formatTime(new Date())
+            });
+            
+            state.lastPrediction = prediction.size;
+            state.lastResultTime = new Date();
+            
+            renderResults();
+          }
           
-          updatePrediction(prediction);
-          
-          state.predictionHistory.unshift({
-            period: period,
-            prediction: prediction.size,
-            predictedNumber: prediction.number,
-            actualNumber: null,
-            status: 'PENDING',
-            logic: state.selectedLogic,
-            confidence: prediction.confidence
-          });
-          
-          state.lastPrediction = prediction.size;
           state.lastFetchedPeriod = period;
-          
           document.getElementById('currentPeriod').textContent = `Period: ${period}`;
-          
-          renderResults();
         }
       } catch (e) {
         console.error("Error in fetchData:", e);
@@ -1605,8 +1681,7 @@
         showNotification('🚀 HEART LASS KING Engine Activated', 'success', 4000);
       }, 1000);
     };
-    
-    // Start
+
     init();
   </script>
 </body>
