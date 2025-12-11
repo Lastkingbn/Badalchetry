@@ -1,1688 +1,609 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>HEART LASS KING - Advanced AI Prediction</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary-cyan: #00ffea;
-      --primary-blue: #0066ff;
-      --primary-purple: #8b5cf6;
-      --primary-pink: #ec4899;
-      --success-green: #00ff88;
-      --warning-orange: #ffaa00;
-      --danger-red: #ff4444;
-      --background-dark: #0a0a0f;
-      --card-dark: #13131a;
-      --card-lighter: #1a1a24;
-      --border-glow: rgba(0, 255, 234, 0.3);
-      --text-primary: #ffffff;
-      --text-secondary: #a0aec0;
-      --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-      --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-      --gradient-4: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
-    }
-    
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--background-dark);
-      color: var(--text-primary);
-      overflow-x: hidden;
-      position: relative;
-      min-height: 100vh;
-      padding: 20px;
-    }
-    
-    #particles-js {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      z-index: 0;
-    }
-    
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
-    }
-    
-    .header {
-      text-align: center;
-      margin-bottom: 30px;
-      animation: fadeInDown 0.6s ease;
-    }
-    
-    .header h1 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 42px;
-      font-weight: 900;
-      background: linear-gradient(90deg, var(--primary-cyan), var(--primary-purple), var(--primary-pink));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-shadow: 0 0 30px rgba(0, 255, 234, 0.5);
-      margin-bottom: 10px;
-      letter-spacing: 3px;
-    }
-    
-    .header p {
-      color: var(--text-secondary);
-      font-size: 14px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
-    
-    .logic-selector {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      margin-bottom: 30px;
-      animation: fadeInUp 0.6s ease 0.2s backwards;
-    }
-    
-    .logic-card {
-      background: var(--card-dark);
-      border: 2px solid transparent;
-      border-radius: 16px;
-      padding: 24px;
-      cursor: pointer;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .logic-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: var(--gradient-1);
-      opacity: 0;
-      transition: opacity 0.4s;
-      z-index: 0;
-    }
-    
-    .logic-card.logic-1::before { background: var(--gradient-1); }
-    .logic-card.logic-2::before { background: var(--gradient-2); }
-    .logic-card.logic-3::before { background: var(--gradient-3); }
-    .logic-card.logic-4::before { background: var(--gradient-4); }
-    
-    .logic-card:hover::before {
-      opacity: 0.1;
-    }
-    
-    .logic-card.active {
-      border-color: var(--primary-cyan);
-      transform: translateY(-5px);
-      box-shadow: 0 10px 40px rgba(0, 255, 234, 0.3);
-    }
-    
-    .logic-card.active::before {
-      opacity: 0.15;
-    }
-    
-    .logic-card-content {
-      position: relative;
-      z-index: 1;
-    }
-    
-    .logic-icon {
-      width: 50px;
-      height: 50px;
-      margin-bottom: 15px;
-      font-size: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .logic-card h3 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 18px;
-      margin-bottom: 8px;
-      color: var(--primary-cyan);
-    }
-    
-    .logic-card p {
-      font-size: 13px;
-      color: var(--text-secondary);
-      line-height: 1.6;
-    }
-    
-    .logic-stats {
-      margin-top: 15px;
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-    }
-    
-    .logic-stat {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    
-    .logic-stat-value {
-      font-weight: 700;
-      font-size: 16px;
-      color: var(--success-green);
-    }
-    
-    .logic-stat-label {
-      color: var(--text-secondary);
-      margin-top: 4px;
-    }
-    
-    .prediction-panel {
-      background: var(--card-dark);
-      border: 1px solid var(--border-glow);
-      border-radius: 20px;
-      padding: 30px;
-      margin-bottom: 30px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-      animation: fadeInUp 0.6s ease 0.4s backwards;
-    }
-    
-    .period-info {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 25px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    .period-number {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 16px;
-      color: var(--primary-cyan);
-    }
-    
-    .period-timer {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 24px;
-      color: var(--warning-orange);
-      font-weight: 700;
-    }
-    
-    .next-result-time {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 14px;
-      color: var(--primary-pink);
-      text-align: center;
-      margin-top: 10px;
-    }
-    
-    .prediction-display {
-      text-align: center;
-      margin: 30px 0;
-    }
-    
-    .prediction-label {
-      font-size: 14px;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      margin-bottom: 15px;
-    }
-    
-    .prediction-value {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 64px;
-      font-weight: 900;
-      background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin: 20px 0;
-      animation: pulse 2s infinite;
-      text-shadow: 0 0 30px rgba(0, 255, 234, 0.5);
-    }
-    
-    .prediction-number {
-      font-size: 48px;
-      font-weight: 700;
-      margin-top: 10px;
-    }
-    
-    .confidence-bar-container {
-      margin: 25px 0;
-    }
-    
-    .confidence-label {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 10px;
-      font-size: 13px;
-      color: var(--text-secondary);
-    }
-    
-    .confidence-value {
-      font-weight: 700;
-      color: var(--success-green);
-    }
-    
-    .confidence-bar {
-      height: 12px;
-      background: var(--card-lighter);
-      border-radius: 20px;
-      overflow: hidden;
-      position: relative;
-    }
-    
-    .confidence-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--success-green), var(--primary-cyan));
-      border-radius: 20px;
-      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
-    }
-    
-    .prediction-factors {
-      background: var(--card-lighter);
-      border-radius: 12px;
-      padding: 20px;
-      margin-top: 25px;
-    }
-    
-    .factors-title {
-      font-size: 14px;
-      color: var(--primary-cyan);
-      margin-bottom: 15px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    
-    .factor-item {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-      font-size: 13px;
-      color: var(--text-secondary);
-    }
-    
-    .factor-icon {
-      width: 20px;
-      height: 20px;
-      margin-right: 10px;
-      color: var(--primary-cyan);
-    }
-    
-    .results-section {
-      animation: fadeInUp 0.6s ease 0.6s backwards;
-    }
-    
-    .results-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-    
-    .results-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 20px;
-      color: var(--primary-cyan);
-    }
-    
-    .stats-mini {
-      display: flex;
-      gap: 20px;
-      font-size: 13px;
-    }
-    
-    .stat-mini {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    
-    .stat-mini-value {
-      font-weight: 700;
-    }
-    
-    .stat-win { color: var(--success-green); }
-    .stat-loss { color: var(--danger-red); }
-    .stat-accuracy { color: var(--primary-cyan); }
-    
-    .results-grid {
-      display: grid;
-      gap: 15px;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    }
-    
-    .result-card {
-      background: var(--card-dark);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      padding: 20px;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .result-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 4px;
-      height: 100%;
-      background: var(--success-green);
-      transition: all 0.3s;
-    }
-    
-    .result-card.win::before {
-      background: var(--success-green);
-      box-shadow: 0 0 20px var(--success-green);
-    }
-    
-    .result-card.loss::before {
-      background: var(--danger-red);
-      box-shadow: 0 0 20px var(--danger-red);
-    }
-    
-    .result-card.pending::before {
-      background: var(--warning-orange);
-      box-shadow: 0 0 20px var(--warning-orange);
-    }
-    
-    .result-card:hover {
-      transform: translateX(5px);
-      border-color: var(--primary-cyan);
-    }
-    
-    .result-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-    }
-    
-    .result-period {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 12px;
-      color: var(--text-secondary);
-    }
-    
-    .result-time {
-      font-size: 11px;
-      color: var(--text-secondary);
-      margin-top: 3px;
-    }
-    
-    .result-status {
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    
-    .result-status.win {
-      background: rgba(0, 255, 136, 0.2);
-      color: var(--success-green);
-      border: 1px solid var(--success-green);
-    }
-    
-    .result-status.loss {
-      background: rgba(255, 68, 68, 0.2);
-      color: var(--danger-red);
-      border: 1px solid var(--danger-red);
-    }
-    
-    .result-status.pending {
-      background: rgba(255, 170, 0, 0.2);
-      color: var(--warning-orange);
-      border: 1px solid var(--warning-orange);
-    }
-    
-    .result-body {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .result-prediction {
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .result-label {
-      font-size: 11px;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      margin-bottom: 5px;
-    }
-    
-    .result-value {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 24px;
-      font-weight: 700;
-    }
-    
-    .result-actual {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-    }
-    
-    .result-number {
-      width: 50px;
-      height: 50px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 24px;
-      font-weight: 700;
-      margin-top: 5px;
-    }
-    
-    .result-number.red {
-      background: linear-gradient(135deg, #ff4444, #cc0000);
-      box-shadow: 0 4px 20px rgba(255, 68, 68, 0.4);
-    }
-    
-    .result-number.green {
-      background: linear-gradient(135deg, #00ff88, #00cc44);
-      box-shadow: 0 4px 20px rgba(0, 255, 136, 0.4);
-    }
-    
-    .result-number.violet {
-      background: linear-gradient(135deg, #8b5cf6, #6d28d9);
-      box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
-    }
-    
-    .analytics-panel {
-      background: var(--card-dark);
-      border: 1px solid var(--border-glow);
-      border-radius: 20px;
-      padding: 30px;
-      margin-bottom: 30px;
-      animation: fadeInUp 0.6s ease 0.8s backwards;
-    }
-    
-    .analytics-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-    }
-    
-    .analytics-card {
-      background: var(--card-lighter);
-      border-radius: 12px;
-      padding: 20px;
-      text-align: center;
-      transition: transform 0.3s;
-    }
-    
-    .analytics-card:hover {
-      transform: translateY(-5px);
-    }
-    
-    .analytics-value {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 32px;
-      font-weight: 700;
-      color: var(--primary-cyan);
-      margin-bottom: 8px;
-    }
-    
-    .analytics-label {
-      font-size: 12px;
-      color: var(--text-secondary);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    
-    .fab-container {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      z-index: 100;
-    }
-    
-    .fab {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--primary-cyan), var(--primary-purple));
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 20px rgba(0, 255, 234, 0.4);
-      transition: all 0.3s;
-      color: white;
-      font-size: 24px;
-    }
-    
-    .fab:hover {
-      transform: scale(1.1) rotate(90deg);
-      box-shadow: 0 6px 30px rgba(0, 255, 234, 0.6);
-    }
-    
-    .fab.muted {
-      opacity: 0.5;
-      background: var(--card-lighter);
-    }
-    
-    .notification {
-      position: fixed;
-      top: 30px;
-      right: 30px;
-      min-width: 300px;
-      background: var(--card-dark);
-      border: 1px solid var(--primary-cyan);
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
-      transform: translateX(150%);
-      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      z-index: 1000;
-    }
-    
-    .notification.show {
-      transform: translateX(0);
-    }
-    
-    .notification.success {
-      border-color: var(--success-green);
-    }
-    
-    .notification.error {
-      border-color: var(--danger-red);
-    }
-    
-    .notification.warning {
-      border-color: var(--warning-orange);
-    }
-    
-    @keyframes fadeInDown {
-      from {
-        opacity: 0;
-        transform: translateY(-30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    @keyframes pulse {
-      0%, 100% {
-        opacity: 1;
-      }
-      50% {
-        opacity: 0.7;
-      }
-    }
-    
-    @keyframes glow {
-      0%, 100% {
-        box-shadow: 0 0 20px rgba(0, 255, 234, 0.3);
-      }
-      50% {
-        box-shadow: 0 0 40px rgba(0, 255, 234, 0.6);
-      }
-    }
-    
-    .loader {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(255, 255, 255, 0.3);
-      border-radius: 50%;
-      border-top-color: var(--primary-cyan);
-      animation: spin 1s ease-in-out infinite;
-    }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    
-    @media (max-width: 768px) {
-      body {
-        padding: 15px;
-      }
-      
-      .header h1 {
-        font-size: 32px;
-      }
-      
-      .logic-selector {
-        grid-template-columns: 1fr;
-      }
-      
-      .prediction-value {
-        font-size: 48px;
-      }
-      
-      .results-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .fab-container {
-        bottom: 20px;
-        right: 20px;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div id="particles-js"></div>
-  
-  <div class="container">
-    <div class="header">
-      <h1>HEART LASS KING</h1>
-      <p>Advanced AI Prediction Engine</p>
-    </div>
-    
-    <div class="logic-selector">
-      <div class="logic-card logic-1 active" data-logic="1">
-        <div class="logic-card-content">
-          <div class="logic-icon">🎯</div>
-          <h3>Pattern Master</h3>
-          <p>Analyzes sequential patterns, streaks, and alternation behaviors for precise predictions.</p>
-          <div class="logic-stats">
-            <div class="logic-stat">
-              <div class="logic-stat-value" id="logic1-wins">0</div>
-              <div class="logic-stat-label">Wins</div>
-            </div>
-            <div class="logic-stat">
-              <div class="logic-stat-value" id="logic1-accuracy">0%</div>
-              <div class="logic-stat-label">Accuracy</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="logic-card logic-2" data-logic="2">
-        <div class="logic-card-content">
-          <div class="logic-icon">📊</div>
-          <h3>Frequency Analyzer</h3>
-          <p>Uses statistical frequency analysis to identify hot and cold numbers for optimal predictions.</p>
-          <div class="logic-stats">
-            <div class="logic-stat">
-              <div class="logic-stat-value" id="logic2-wins">0</div>
-              <div class="logic-stat-label">Wins</div>
-            </div>
-            <div class="logic-stat">
-              <div class="logic-stat-value" id="logic2-accuracy">0%</div>
-              <div class="logic-stat-label">Accuracy</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="logic-card logic-3" data-logic="3">
-        <div class="logic-card-content">
-          <div class="logic-icon">🤖</div>
-          <h3>Hybrid Intelligence</h3>
-          <p>Combines multiple AI algorithms with entropy analysis for balanced and adaptive predictions.</p>
-          <div class="logic-stats">
-            <div class="logic-stat">
-              <div class="logic-stat-value" id="logic3-wins">0</div>
-              <div class="logic-stat-label">Wins</div>
-            </div>
-            <div class="logic-stat">
-              <div class="logic-stat-value" id="logic3-accuracy">0%</div>
-              <div class="logic-stat-label">Accuracy</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="logic-card logic-4" data-logic="4">
-        <div class="logic-card-content">
-          <div class="logic-icon">⚡</div>
-          <h3>SURESHOT</h3>
-          <p>Time-based prediction system with scheduled result displays at specific hours for maximum accuracy.</p>
-          <div class="logic-stats">
-            <div class="logic-stat">
-              <div class="logic-stat-value" id="logic4-wins">0</div>
-              <div class="logic-stat-label">Wins</div>
-            </div>
-            <div class="logic-stat">
-              <div class="logic-stat-value" id="logic4-accuracy">0%</div>
-              <div class="logic-stat-label">Accuracy</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <div class="prediction-panel">
-      <div class="period-info">
-        <div class="period-number" id="currentPeriod">
-          Period: <span class="loader"></span>
-        </div>
-        <div class="period-timer" id="liveTime">00:60</div>
-      </div>
-      <div class="next-result-time" id="nextResultTime">Next Result: Calculating...</div>
-      
-      <div class="prediction-display">
-        <div class="prediction-label">AI PREDICTION</div>
-        <div class="prediction-value" id="predictionValue">
-          <span class="loader"></span>
-        </div>
-        <div class="prediction-number" id="predictionNumber" style="display: none;"></div>
-      </div>
-      
-      <div class="confidence-bar-container">
-        <div class="confidence-label">
-          <span>Confidence Level</span>
-          <span class="confidence-value" id="confidenceValue">0%</span>
-        </div>
-        <div class="confidence-bar">
-          <div class="confidence-fill" id="confidenceFill" style="width: 0%"></div>
-        </div>
-      </div>
-      
-      <div class="prediction-factors" id="predictionFactors" style="display: none;">
-        <div class="factors-title">Analysis Factors</div>
-        <div id="factorsList"></div>
-      </div>
-    </div>
-    
-    <div class="analytics-panel">
-      <div class="analytics-grid">
-        <div class="analytics-card">
-          <div class="analytics-value" id="totalWins">0</div>
-          <div class="analytics-label">Total Wins</div>
-        </div>
-        <div class="analytics-card">
-          <div class="analytics-value" id="totalLosses">0</div>
-          <div class="analytics-label">Total Losses</div>
-        </div>
-        <div class="analytics-card">
-          <div class="analytics-value" id="overallAccuracy">0%</div>
-          <div class="analytics-label">Overall Accuracy</div>
-        </div>
-        <div class="analytics-card">
-          <div class="analytics-value" id="currentStreak">0</div>
-          <div class="analytics-label">Win Streak</div>
-        </div>
-        <div class="analytics-card">
-          <div class="analytics-value" id="serverStatus" class="offline">●</div>
-          <div class="analytics-label">Server Status</div>
-        </div>
-      </div>
-    </div>
-    
-    <div class="results-section">
-      <div class="results-header">
-        <h2 class="results-title">Prediction History</h2>
-        <div class="stats-mini">
-          <div class="stat-mini">
-            <span class="stat-mini-value stat-win" id="miniWins">0</span> Wins
-          </div>
-          <div class="stat-mini">
-            <span class="stat-mini-value stat-loss" id="miniLosses">0</span> Losses
-          </div>
-          <div class="stat-mini">
-            <span class="stat-mini-value stat-accuracy" id="miniAccuracy">0%</span> Success
-          </div>
-        </div>
-      </div>
-      
-      <div class="results-grid" id="resultsGrid">
-        <div class="result-card pending">
-          <div class="result-header">
-            <div class="result-period">Loading...</div>
-            <div class="result-status pending">Pending</div>
-          </div>
-          <div class="result-body">
-            <div class="result-prediction">
-              <div class="result-label">Predicted</div>
-              <div class="result-value">--</div>
-            </div>
-            <div class="result-actual">
-              <div class="result-label">Actual</div>
-              <div class="result-number" style="background: var(--card-lighter);">?</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <div class="fab-container">
-    <button class="fab" id="soundToggle" title="Toggle Sound">
-      🔊
-    </button>
-  </div>
-  
-  <div class="notification" id="notification">
-    <div id="notificationMessage">Notification</div>
-  </div>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BN Last King Hack - Elite Developer Hub</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-  <script>
-    const API_CONFIG = {
-      CURRENT_API: 'https://api.bdg88zf.com/api/webapi/GetGameIssue',
-      HISTORY_API: 'https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json',
-      UPDATE_INTERVAL: 5000,
-      RETRY_INTERVAL: 3000,
-      MAX_RETRIES: 3,
-      REQUEST_DATA: {
-        typeId: 1,
-        language: 0,
-        random: "e7fe6c090da2495ab8290dac551ef1ed",
-        signature: "1F390E2B2D8A55D693E57FD905AE73A7",
-        timestamp: 1723726679
-      },
-      // SURESHOT timing configuration
-      RESULT_TIMES: [
-        { hour: 5, minute: 0 },   // 5:00 PM
-        { hour: 5, minute: 30 },  // 5:30 PM
-        { hour: 6, minute: 0 },   // 6:00 PM
-        { hour: 7, minute: 0 },   // 7:00 PM
-        { hour: 4, minute: 0 },   // 4:00 AM
-        { hour: 4, minute: 30 },  // 4:30 AM
-        { hour: 5, minute: 0 },   // 5:00 AM
-        { hour: 5, minute: 30 }   // 5:30 AM
-      ]
-    };
-    
-    const state = {
-      selectedLogic: 1,
-      predictionHistory: [],
-      lastFetchedPeriod: null,
-      lastPrediction: null,
-      soundEnabled: true,
-      isFetching: false,
-      gameHistory: [],
-      lastResultTime: null,
-      stats: {
-        logic1: { wins: 0, losses: 0, accuracy: 0 },
-        logic2: { wins: 0, losses: 0, accuracy: 0 },
-        logic3: { wins: 0, losses: 0, accuracy: 0 },
-        logic4: { wins: 0, losses: 0, accuracy: 0 },
-        overall: { wins: 0, losses: 0, accuracy: 0, streak: 0 }
-      }
-    };
-    
-    // Prediction Logic Classes
-    class PatternMasterLogic {
-      constructor() {
-        this.name = "Pattern Master";
-      }
-      
-      predict(history) {
-        if (history.length < 5) return this.randomPredict();
-        
-        const factors = [];
-        let confidence = 0.5;
-        
-        let streak = 1;
-        const lastSize = history[0].number <= 4 ? 'small' : 'big';
-        
-        for (let i = 1; i < Math.min(history.length, 10); i++) {
-          const prevSize = history[i - 1].number <= 4 ? 'small' : 'big';
-          const currentSize = history[i].number <= 4 ? 'small' : 'big';
-          if (prevSize === currentSize) streak++;
-          else break;
+        body {
+            font-family: 'Fira Code', monospace;
+            background: #000000;
+            color: #00ff00;
+            overflow-x: hidden;
+            position: relative;
         }
-        
-        let predictedSize = lastSize;
-        if (streak >= 3) {
-          predictedSize = lastSize === 'small' ? 'big' : 'small';
-          confidence += 0.2;
-          factors.push(`Breaking ${streak}-length streak`);
-        } else {
-          predictedSize = lastSize === 'small' ? 'big' : 'small';
-          factors.push('Pattern reversal expected');
+
+        /* Matrix Rain Background */
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
         }
-        
-        const numbers = predictedSize === 'small' ? [0, 1, 2, 3, 4] : [5, 6, 7, 8, 9];
-        const predictedNumber = numbers[Math.floor(Math.random() * numbers.length)];
-        
-        return {
-          size: predictedSize.toUpperCase(),
-          number: predictedNumber,
-          confidence: Math.min(0.95, confidence),
-          factors: factors
-        };
-      }
-      
-      randomPredict() {
-        const size = Math.random() > 0.5 ? 'BIG' : 'SMALL';
-        const numbers = size === 'SMALL' ? [0, 1, 2, 3, 4] : [5, 6, 7, 8, 9];
-        return {
-          size: size,
-          number: numbers[Math.floor(Math.random() * numbers.length)],
-          confidence: 0.5,
-          factors: ['Insufficient data']
-        };
-      }
-    }
-    
-    class FrequencyAnalyzerLogic {
-      constructor() {
-        this.name = "Frequency Analyzer";
-      }
-      
-      predict(history) {
-        if (history.length < 10) return this.randomPredict();
-        
-        const factors = [];
-        let confidence = 0.55;
-        const frequency = { small: 0, big: 0 };
-        
-        history.slice(0, 30).forEach(item => {
-          frequency[item.number <= 4 ? 'small' : 'big']++;
-        });
-        
-        const total = frequency.small + frequency.big;
-        const smallRatio = frequency.small / total;
-        let predictedSize = smallRatio < 0.45 ? 'SMALL' : smallRatio > 0.55 ? 'BIG' : (Math.random() > 0.5 ? 'BIG' : 'SMALL');
-        
-        if (smallRatio < 0.45) {
-          confidence += 0.15;
-          factors.push(`Small underrepresented (${(smallRatio * 100).toFixed(0)}%)`);
-        } else if (smallRatio > 0.55) {
-          confidence += 0.15;
-          factors.push(`Big underrepresented (${((1-smallRatio) * 100).toFixed(0)}%)`);
-        } else {
-          factors.push('Balanced frequency');
+
+        /* CRT Screen Effect */
+        .crt-effect {
+            position: relative;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            animation: flicker 0.15s infinite linear;
         }
-        
-        const numbers = predictedSize === 'SMALL' ? [0, 1, 2, 3, 4] : [5, 6, 7, 8, 9];
-        const predictedNumber = numbers[Math.floor(Math.random() * numbers.length)];
-        
-        return {
-          size: predictedSize,
-          number: predictedNumber,
-          confidence: Math.min(0.9, confidence),
-          factors: factors
-        };
-      }
-      
-      randomPredict() {
-        const size = Math.random() > 0.5 ? 'BIG' : 'SMALL';
-        const numbers = size === 'SMALL' ? [0, 1, 2, 3, 4] : [5, 6, 7, 8, 9];
-        return {
-          size: size,
-          number: numbers[Math.floor(Math.random() * numbers.length)],
-          confidence: 0.5,
-          factors: ['Insufficient data']
-        };
-      }
-    }
-    
-    class HybridIntelligenceLogic {
-      constructor() {
-        this.name = "Hybrid Intelligence";
-      }
-      
-      predict(history) {
-        if (history.length < 10) return this.randomPredict();
-        
-        const factors = [];
-        let confidence = 0.5;
-        let scores = { small: 0, big: 0 };
-        
-        // Pattern analysis
-        let streak = 1;
-        for (let i = 1; i < Math.min(history.length, 10); i++) {
-          const prevSize = history[i - 1].number <= 4 ? 'small' : 'big';
-          const currentSize = history[i].number <= 4 ? 'small' : 'big';
-          if (prevSize === currentSize) streak++;
-          else break;
+
+        @keyframes flicker {
+            0% { opacity: 1; }
+            98% { opacity: 1; }
+            99% { opacity: 0.98; }
+            100% { opacity: 1; }
         }
-        
-        if (streak >= 3) {
-          const lastSize = history[0].number <= 4 ? 'small' : 'big';
-          scores[lastSize === 'small' ? 'big' : 'small'] += 0.25;
-          factors.push(`Streak breaking (${streak})`);
-          confidence += 0.1;
+
+        /* Terminal Window */
+        .terminal-window {
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #00ff00;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
         }
-        
-        // Frequency analysis
-        const frequency = { small: 0, big: 0 };
-        history.slice(0, 20).forEach(item => {
-          frequency[item.number <= 4 ? 'small' : 'big']++;
-        });
-        
-        const total = frequency.small + frequency.big;
-        const smallRatio = frequency.small / total;
-        if (smallRatio < 0.4) {
-          scores.small += 0.2;
-          factors.push('Frequency compensation');
-          confidence += 0.08;
-        } else if (smallRatio > 0.6) {
-          scores.big += 0.2;
-          factors.push('Frequency compensation');
-          confidence += 0.08;
+
+        .terminal-header {
+            background: #001100;
+            padding: 10px 15px;
+            border-bottom: 1px solid #00ff00;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        
-        const predictedSize = scores.small > scores.big ? 'SMALL' : 'BIG';
-        const numbers = predictedSize === 'SMALL' ? [0, 1, 2, 3, 4] : [5, 6, 7, 8, 9];
-        const predictedNumber = numbers[Math.floor(Math.random() * numbers.length)];
-        
-        if (factors.length === 0) factors.push('Balanced hybrid analysis');
-        
-        return {
-          size: predictedSize,
-          number: predictedNumber,
-          confidence: Math.min(0.92, confidence + (Math.abs(scores.small - scores.big) * 0.5)),
-          factors: factors
-        };
-      }
-      
-      randomPredict() {
-        const size = Math.random() > 0.5 ? 'BIG' : 'SMALL';
-        const numbers = size === 'SMALL' ? [0, 1, 2, 3, 4] : [5, 6, 7, 8, 9];
-        return {
-          size: size,
-          number: numbers[Math.floor(Math.random() * numbers.length)],
-          confidence: 0.5,
-          factors: ['Insufficient data']
-        };
-      }
-    }
-    
-    class SureshotLogic {
-      constructor() {
-        this.name = "SURESHOT";
-      }
-      
-      predict(history) {
-        if (history.length < 15) return this.randomPredict();
-        
-        const factors = [];
-        let confidence = 0.7; // Higher base confidence for SURESHOT
-        
-        // Advanced pattern detection
-        const patterns = this.detectPatterns(history);
-        const frequency = this.analyzeFrequency(history);
-        const timePattern = this.analyzeTimePattern();
-        
-        let scores = { small: 0, big: 0 };
-        
-        // Pattern scoring
-        if (patterns.streak >= 4) {
-          const opposite = patterns.lastSize === 'small' ? 'big' : 'small';
-          scores[opposite] += 0.3;
-          factors.push(`Critical streak: ${patterns.streak}`);
-          confidence += 0.15;
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
         }
-        
-        // Frequency scoring
-        if (frequency.smallRatio < 0.35) {
-          scores.small += 0.25;
-          factors.push('Heavy small deficit');
-          confidence += 0.1;
-        } else if (frequency.smallRatio > 0.65) {
-          scores.big += 0.25;
-          factors.push('Heavy big deficit');
-          confidence += 0.1;
+
+        .dot-red { background: #ff5555; }
+        .dot-yellow { background: #ffff55; }
+        .dot-green { background: #55ff55; }
+
+        .terminal-content {
+            padding: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            line-height: 1.6;
         }
-        
-        // Time-based adjustment
-        if (timePattern.isResultTime) {
-          scores[timePattern.favoredSize] += 0.2;
-          factors.push(`Result time: ${timePattern.timeLabel}`);
-          confidence += 0.05;
+
+        /* Typing Animation */
+        .typing-animation {
+            overflow: hidden;
+            border-right: 3px solid #00ff00;
+            white-space: nowrap;
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
         }
-        
-        const predictedSize = scores.small > scores.big ? 'SMALL' : scores.big > scores.small ? 'BIG' : (Math.random() > 0.5 ? 'BIG' : 'SMALL');
-        const numbers = predictedSize === 'SMALL' ? [0, 1, 2, 3, 4] : [5, 6, 7, 8, 9];
-        
-        // Smart number selection based on history
-        const numberFreq = {};
-        history.slice(0, 20).forEach(item => {
-          numberFreq[item.number] = (numberFreq[item.number] || 0) + 1;
-        });
-        
-        const validNumbers = numbers.filter(n => (numberFreq[n] || 0) < 3);
-        const predictedNumber = validNumbers.length > 0 
-          ? validNumbers[Math.floor(Math.random() * validNumbers.length)]
-          : numbers[Math.floor(Math.random() * numbers.length)];
-        
-        if (factors.length === 0) factors.push('SURESHOT analysis complete');
-        
-        return {
-          size: predictedSize,
-          number: predictedNumber,
-          confidence: Math.min(0.95, confidence),
-          factors: factors
-        };
-      }
-      
-      detectPatterns(history) {
-        let streak = 1;
-        const lastSize = history[0].number <= 4 ? 'small' : 'big';
-        
-        for (let i = 1; i < Math.min(history.length, 15); i++) {
-          const currentSize = history[i].number <= 4 ? 'small' : 'big';
-          if (currentSize === lastSize) streak++;
-          else break;
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
         }
-        
-        return { streak, lastSize };
-      }
-      
-      analyzeFrequency(history) {
-        const freq = { small: 0, big: 0 };
-        history.slice(0, 30).forEach(item => {
-          freq[item.number <= 4 ? 'small' : 'big']++;
-        });
-        const total = freq.small + freq.big;
-        return { smallRatio: freq.small / total, bigRatio: freq.big / total };
-      }
-      
-      analyzeTimePattern() {
-        const now = new Date();
-        const hour = now.getHours();
-        const minute = now.getMinutes();
-        
-        // Check if current time matches result times (17:00-19:00 or 04:00-06:00)
-        const isEvening = (hour >= 17 && hour <= 19);
-        const isMorning = (hour >= 4 && hour < 6);
-        const isResultTime = isEvening || isMorning;
-        
-        const favoredSize = isEvening ? 'big' : 'small';
-        const timeLabel = isEvening ? 'Evening Window' : isMorning ? 'Morning Window' : 'Off-peak';
-        
-        return { isResultTime, favoredSize, timeLabel };
-      }
-      
-      randomPredict() {
-        const size = Math.random() > 0.5 ? 'BIG' : 'SMALL';
-        const numbers = size === 'SMALL' ? [0, 1, 2, 3, 4] : [5, 6, 7, 8, 9];
-        return {
-          size: size,
-          number: numbers[Math.floor(Math.random() * numbers.length)],
-          confidence: 0.5,
-          factors: ['Building data for SURESHOT']
-        };
-      }
-    }
-    
-    const logicEngines = {
-      1: new PatternMasterLogic(),
-      2: new FrequencyAnalyzerLogic(),
-      3: new HybridIntelligenceLogic(),
-      4: new SureshotLogic()
-    };
-    
-    // Utility Functions
-    const formatTimer = () => {
-      const now = new Date();
-      now.setTime(now.getTime() + (now.getTimezoneOffset() + 5.5 * 60) * 60 * 1000);
-      const seconds = now.getSeconds();
-      return `${String(0).padStart(2, '0')}:${String(60 - seconds).padStart(2, '0')}`;
-    };
-    
-    const formatPeriodNumber = () => {
-      const now = new Date();
-      now.setTime(now.getTime() + (now.getTimezoneOffset() + 5.5 * 60) * 60 * 1000);
-      const yearMonthDay = now.toISOString().slice(0, 10).replace(/-/g, '');
-      const minutes = now.getHours() * 60 + now.getMinutes();
-      return yearMonthDay + "1000" + (10001 + minutes);
-    };
-    
-    const getNumberColor = (num) => {
-      if ([1, 3, 7, 9].includes(num)) return "green";
-      if ([2, 4, 6, 8].includes(num)) return "red";
-      return "violet";
-    };
-    
-    const isResultTime = () => {
-      const now = new Date();
-      const hour = now.getHours();
-      const minute = now.getMinutes();
-      
-      // Evening times: 17:00 (5PM), 17:30 (5:30PM), 18:00 (6PM), 19:00 (7PM)
-      // Morning times: 04:00 (4AM), 04:30 (4:30AM), 05:00 (5AM), 05:30 (5:30AM)
-      const resultTimes = [
-        { h: 17, m: 0 }, { h: 17, m: 30 }, { h: 18, m: 0 }, { h: 19, m: 0 },
-        { h: 4, m: 0 }, { h: 4, m: 30 }, { h: 5, m: 0 }, { h: 5, m: 30 }
-      ];
-      
-      return resultTimes.some(t => t.h === hour && Math.abs(t.m - minute) < 2);
-    };
-    
-    const getNextResultTime = () => {
-      const now = new Date();
-      const hour = now.getHours();
-      const minute = now.getMinutes();
-      
-      const times = [
-        { h: 4, m: 0, label: '9:00 PM' },
-        { h: 4, m: 30, label: '7:30 PM' },
-        { h: 5, m: 0, label: '5:00 PM' },
-        { h: 5, m: 30, label: '3:30 PM' },
-        { h: 17, m: 0, label: '9:00 PM' },
-        { h: 17, m: 30, label: '5:30 PM' },
-        { h: 18, m: 0, label: '6:00 PM' },
-        { h: 19, m: 0, label: '7:00 PM' }
-      ];
-      
-      for (let t of times) {
-        if (hour < t.h || (hour === t.h && minute < t.m)) {
-          return t.label;
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #00ff00; }
         }
-      }
-      
-      return times[0].label + ' (Tomorrow)';
-    };
-    
-    const formatTime = (date) => {
-      const hours = date.getHours().toString().padStart(2, '0');
-      const minutes = date.getMinutes().toString().padStart(2, '0');
-      return `${hours}:${minutes}`;
-    };
-    
-    const playSound = (type) => {
-      if (!state.soundEnabled) return;
-      
-      try {
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
-        
-        oscillator.connect(gainNode);
-        gainNode.connect(audioContext.destination);
-        
-        const frequencies = { win: 523.25, loss: 392.00, notification: 659.25 };
-        oscillator.frequency.setValueAtTime(frequencies[type] || 440.00, audioContext.currentTime);
-        
-        gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-        
-        oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + 0.5);
-      } catch (e) {
-        console.log("Audio not supported");
-      }
-    };
-    
-    const showNotification = (message, type = 'info', duration = 3000) => {
-      const notification = document.getElementById('notification');
-      const messageElement = document.getElementById('notificationMessage');
-      
-      messageElement.textContent = message;
-      notification.className = `notification ${type}`;
-      notification.classList.add('show');
-      
-      if (type !== 'info') {
-        playSound('notification');
-      }
-      
-      setTimeout(() => {
-        notification.classList.remove('show');
-      }, duration);
-    };
-    
-    // API Functions
-    const fetchCurrentPeriod = async (retryCount = 0) => {
-      try {
-        const res = await fetch(API_CONFIG.CURRENT_API, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            ...API_CONFIG.REQUEST_DATA, 
-            timestamp: Math.floor(Date.now() / 1000) 
-          })
-        });
-        
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-        const data = await res.json();
-        if (!data?.data?.issueNumber) throw new Error("Invalid response");
-        return data.data.issueNumber;
-      } catch (e) {
-        console.error("Period fetch error:", e.message);
-        if (retryCount < API_CONFIG.MAX_RETRIES) {
-          await new Promise(resolve => setTimeout(resolve, API_CONFIG.RETRY_INTERVAL));
-          return fetchCurrentPeriod(retryCount + 1);
+
+        /* Glitch Effect */
+        .glitch {
+            position: relative;
+            color: #00ff00;
+            font-size: 2rem;
+            font-weight: bold;
+            animation: glitch 2s infinite;
         }
-        return formatPeriodNumber();
-      }
-    };
-    
-    const fetchHistory = async (retryCount = 0) => {
-      if (state.isFetching) return [];
-      state.isFetching = true;
-      
-      try {
-        const res = await fetch(API_CONFIG.HISTORY_API + '?ts=' + Date.now());
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-        const data = await res.json();
-        if (!data?.data?.list) throw new Error("Invalid response");
-        return data.data.list;
-      } catch (e) {
-        console.error("History fetch error:", e.message);
-        if (retryCount < API_CONFIG.MAX_RETRIES) {
-          await new Promise(resolve => setTimeout(resolve, API_CONFIG.RETRY_INTERVAL));
-          return fetchHistory(retryCount + 1);
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
-        return [];
-      } finally {
-        state.isFetching = false;
-      }
-    };
-    
-    // Update Functions
-    const updateLiveTime = () => {
-      document.getElementById('liveTime').textContent = formatTimer();
-      document.getElementById('nextResultTime').textContent = 'Next Result: ' + getNextResultTime();
-    };
-    
-    const updateStats = () => {
-      const total = state.stats.overall.wins + state.stats.overall.losses;
-      state.stats.overall.accuracy = total > 0 ? ((state.stats.overall.wins / total) * 100).toFixed(1) : 0;
-      
-      document.getElementById('totalWins').textContent = state.stats.overall.wins;
-      document.getElementById('totalLosses').textContent = state.stats.overall.losses;
-      document.getElementById('overallAccuracy').textContent = state.stats.overall.accuracy + '%';
-      document.getElementById('currentStreak').textContent = state.stats.overall.streak;
-      
-      document.getElementById('miniWins').textContent = state.stats.overall.wins;
-      document.getElementById('miniLosses').textContent = state.stats.overall.losses;
-      document.getElementById('miniAccuracy').textContent = state.stats.overall.accuracy + '%';
-      
-      for (let i = 1; i <= 4; i++) {
-        const logicStats = state.stats[`logic${i}`];
-        const total = logicStats.wins + logicStats.losses;
-        logicStats.accuracy = total > 0 ? ((logicStats.wins / total) * 100).toFixed(1) : 0;
-        
-        document.getElementById(`logic${i}-wins`).textContent = logicStats.wins;
-        document.getElementById(`logic${i}-accuracy`).textContent = logicStats.accuracy + '%';
-      }
-    };
-    
-    const updatePrediction = (prediction) => {
-      document.getElementById('predictionValue').textContent = prediction.size;
-      document.getElementById('predictionNumber').textContent = `Number: ${prediction.number}`;
-      document.getElementById('predictionNumber').style.display = 'block';
-      
-      const confidence = Math.round(prediction.confidence * 100);
-      document.getElementById('confidenceValue').textContent = confidence + '%';
-      document.getElementById('confidenceFill').style.width = confidence + '%';
-      
-      if (prediction.factors && prediction.factors.length > 0) {
-        const factorsList = document.getElementById('factorsList');
-        factorsList.innerHTML = prediction.factors.map(factor => 
-          `<div class="factor-item">
-            <div class="factor-icon">✓</div>
-            <span>${factor}</span>
-          </div>`
-        ).join('');
-        document.getElementById('predictionFactors').style.display = 'block';
-      } else {
-        document.getElementById('predictionFactors').style.display = 'none';
-      }
-    };
-    
-    const renderResults = () => {
-      const grid = document.getElementById('resultsGrid');
-      
-      if (state.predictionHistory.length === 0) {
-        grid.innerHTML = `
-          <div class="result-card pending">
-            <div class="result-header">
-              <div class="result-period">No predictions yet</div>
-              <div class="result-status pending">Pending</div>
-            </div>
-          </div>
-        `;
-        return;
-      }
-      
-      grid.innerHTML = state.predictionHistory.slice(0, 20).map(item => {
-        const statusClass = item.status === 'WIN' ? 'win' : item.status === 'LOSS' ? 'loss' : 'pending';
-        const numberColor = item.actualNumber !== null ? getNumberColor(item.actualNumber) : '';
-        
-        return `
-          <div class="result-card ${statusClass}">
-            <div class="result-header">
-              <div>
-                <div class="result-period">${item.period}</div>
-                <div class="result-time">${item.time || ''}</div>
-              </div>
-              <div class="result-status ${statusClass}">${item.status}</div>
-            </div>
-            <div class="result-body">
-              <div class="result-prediction">
-                <div class="result-label">Predicted</div>
-                <div class="result-value">${item.prediction}</div>
-              </div>
-              <div class="result-actual">
-                <div class="result-label">Actual</div>
-                <div class="result-number ${numberColor}">
-                  ${item.actualNumber !== null ? item.actualNumber : '?'}
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join('');
-    };
-    
-    const checkServerStatus = async () => {
-      const statusElement = document.getElementById('serverStatus');
-      
-      if (!navigator.onLine) {
-        statusElement.textContent = '●';
-        statusElement.style.color = 'var(--danger-red)';
-        return;
-      }
-      
-      try {
-        const startTime = performance.now();
-        await fetch('https://www.google.com', { mode: 'no-cors' });
-        const endTime = performance.now();
-        const latency = Math.round(endTime - startTime);
-        
-        statusElement.textContent = '●';
-        statusElement.style.color = latency < 200 ? 'var(--success-green)' : 'var(--warning-orange)';
-      } catch (e) {
-        statusElement.textContent = '●';
-        statusElement.style.color = 'var(--danger-red)';
-      }
-    };
-    
-    // Main Data Fetch with Result Time Logic
-    const fetchData = async () => {
-      try {
-        const period = await fetchCurrentPeriod();
-        const historyList = await fetchHistory();
-        
-        if (historyList.length > 0) {
-          state.gameHistory = historyList.slice(0, 50).map(item => ({
-            period: item.issueNumber,
-            number: parseInt(item.number),
-            timestamp: Date.now()
-          }));
+
+        .glitch::before {
+            animation: glitch-1 0.5s infinite;
+            color: #ff0000;
+            z-index: -1;
         }
-        
-        // Check if period changed
-        const periodChanged = period !== state.lastFetchedPeriod;
-        
-        // Check if it's result time
-        const nowIsResultTime = isResultTime();
-        
-        // Show results only at specified times OR when period changes
-        if (periodChanged && (nowIsResultTime || state.selectedLogic !== 4)) {
-          // Check previous prediction
-          if (state.predictionHistory.length > 0 && state.predictionHistory[0].status === 'PENDING') {
-            const match = state.gameHistory.find(h => h.period === state.predictionHistory[0].period);
-            if (match) {
-              const actualSize = match.number >= 5 ? 'BIG' : 'SMALL';
-              const isWin = state.predictionHistory[0].prediction === actualSize;
-              
-              state.predictionHistory[0].status = isWin ? 'WIN' : 'LOSS';
-              state.predictionHistory[0].actualNumber = match.number;
-              state.predictionHistory[0].time = formatTime(new Date());
-              
-              const logicKey = `logic${state.predictionHistory[0].logic}`;
-              if (isWin) {
-                state.stats[logicKey].wins++;
-                state.stats.overall.wins++;
-                state.stats.overall.streak++;
-                playSound('win');
-                showNotification(`🎉 WIN! ${logicEngines[state.predictionHistory[0].logic].name} was correct!`, 'success');
-              } else {
-                state.stats[logicKey].losses++;
-                state.stats.overall.losses++;
-                state.stats.overall.streak = 0;
-                playSound('loss');
-                showNotification(`❌ LOSS! Prediction was incorrect`, 'error');
-              }
-              
-              updateStats();
-              renderResults();
+
+        .glitch::after {
+            animation: glitch-2 0.5s infinite;
+            color: #0000ff;
+            z-index: -2;
+        }
+
+        @keyframes glitch {
+            0%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+        }
+
+        @keyframes glitch-1 {
+            0%, 100% { transform: translate(0); }
+            10% { transform: translate(-2px, -2px); }
+            20% { transform: translate(2px, 2px); }
+        }
+
+        @keyframes glitch-2 {
+            0%, 100% { transform: translate(0); }
+            30% { transform: translate(3px, 2px); }
+            40% { transform: translate(-3px, -2px); }
+        }
+
+        /* Code Syntax Highlighting */
+        .syntax-keyword { color: #ff79c6; }
+        .syntax-string { color: #f1fa8c; }
+        .syntax-comment { color: #6272a4; }
+        .syntax-function { color: #50fa7b; }
+        .syntax-variable { color: #8be9fd; }
+
+        /* Neon Glow */
+        .neon-glow {
+            text-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor; }
+            to { text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor; }
+        }
+
+        /* Service Cards */
+        .service-card {
+            background: rgba(0, 20, 0, 0.8);
+            border: 1px solid #00ff00;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .service-card:hover::before {
+            left: 100%;
+        }
+
+        .service-card:hover {
+            border-color: #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            transform: translateY(-5px);
+        }
+
+        /* Digital Clock */
+        .digital-clock {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            color: #00ff00;
+            text-align: center;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #00ff00;
+            border-radius: 4px;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #00ff00;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff00, #00ffff);
+            border-radius: 10px;
+            animation: loading 2s ease-in-out infinite;
+        }
+
+        @keyframes loading {
+            0% { width: 0%; }
+            50% { width: 75%; }
+            100% { width: 100%; }
+        }
+
+        /* Button Styles */
+        .terminal-button {
+            background: transparent;
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            padding: 12px 24px;
+            font-family: 'Fira Code', monospace;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px 5px;
+            text-transform: uppercase;
+        }
+
+        .terminal-button:hover {
+            background: #00ff00;
+            color: #000000;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+            text-decoration: none;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            font-size: 12px;
+            border-radius: 4px;
+            margin: 5px;
+            font-weight: bold;
+        }
+
+        .status-online { background: #00ff00; color: #000; }
+        .status-active { background: #00ffff; color: #000; }
+        .status-premium { background: #ff00ff; color: #fff; }
+        .status-elite { background: #ffff00; color: #000; }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .terminal-content {
+                padding: 15px;
+                font-size: 14px;
             }
-          }
-          
-          // Generate new prediction only at result times (or always for non-SURESHOT)
-          if (nowIsResultTime || state.selectedLogic !== 4) {
-            const currentLogic = logicEngines[state.selectedLogic];
-            const prediction = currentLogic.predict(state.gameHistory);
             
-            updatePrediction(prediction);
-            
-            state.predictionHistory.unshift({
-              period: period,
-              prediction: prediction.size,
-              predictedNumber: prediction.number,
-              actualNumber: null,
-              status: 'PENDING',
-              logic: state.selectedLogic,
-              confidence: prediction.confidence,
-              time: formatTime(new Date())
-            });
-            
-            state.lastPrediction = prediction.size;
-            state.lastResultTime = new Date();
-            
-            renderResults();
-          }
-          
-          state.lastFetchedPeriod = period;
-          document.getElementById('currentPeriod').textContent = `Period: ${period}`;
+            .glitch {
+                font-size: 1.5rem;
+            }
         }
-      } catch (e) {
-        console.error("Error in fetchData:", e);
-        showNotification("Error fetching data. Retrying...", "error");
-      }
-    };
-    
-    // Event Listeners
-    document.querySelectorAll('.logic-card').forEach(card => {
-      card.addEventListener('click', () => {
-        document.querySelectorAll('.logic-card').forEach(c => c.classList.remove('active'));
-        card.classList.add('active');
-        state.selectedLogic = parseInt(card.dataset.logic);
-        showNotification(`Switched to ${logicEngines[state.selectedLogic].name}`, 'success', 2000);
-      });
-    });
-    
-    document.getElementById('soundToggle').addEventListener('click', () => {
-      state.soundEnabled = !state.soundEnabled;
-      const btn = document.getElementById('soundToggle');
-      
-      if (state.soundEnabled) {
-        btn.classList.remove('muted');
-        btn.textContent = '🔊';
-        showNotification('Sound enabled', 'success', 2000);
-      } else {
-        btn.classList.add('muted');
-        btn.textContent = '🔇';
-        showNotification('Sound disabled', 'info', 2000);
-      }
-    });
-    
-    // Initialize Particles
-    const initParticles = () => {
-      particlesJS('particles-js', {
-        particles: {
-          number: { value: 60, density: { enable: true, value_area: 800 } },
-          color: { value: "#00ffea" },
-          shape: { type: "circle" },
-          opacity: { value: 0.3, random: true },
-          size: { value: 3, random: true },
-          line_linked: {
-            enable: true,
-            distance: 150,
-            color: "#00ffea",
-            opacity: 0.2,
-            width: 1
-          },
-          move: {
-            enable: true,
-            speed: 2,
-            direction: "none",
-            random: true,
-            straight: false,
-            out_mode: "out",
-            bounce: false
-          }
-        },
-        interactivity: {
-          detect_on: "canvas",
-          events: {
-            onhover: { enable: true, mode: "repulse" },
-            onclick: { enable: true, mode: "push" },
-            resize: true
-          }
-        },
-        retina_detect: true
-      });
-    };
-    
-    // Initialize Application
-    const init = () => {
-      initParticles();
-      updateLiveTime();
-      checkServerStatus();
-      fetchData();
-      
-      setInterval(updateLiveTime, 1000);
-      setInterval(fetchData, API_CONFIG.UPDATE_INTERVAL);
-      setInterval(checkServerStatus, 10000);
-      
-      setTimeout(() => {
-        showNotification('🚀 HEART LASS KING Engine Activated', 'success', 4000);
-      }, 1000);
-    };
 
-    init();
-  </script>
+        /* ASCII Art */
+        .ascii-art {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            line-height: 1;
+            white-space: pre;
+            color: #00ff00;
+            text-align: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body class="crt-effect">
+    <canvas id="matrix-canvas"></canvas>
+    
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <div class="glitch neon-glow" data-text="BN LAST KING HACK">BN LAST KING HACK</div>
+            <div class="typing-animation mt-4 text-lg">$ Elite Developer Hub Initialized...</div>
+            
+            <div class="ascii-art mt-8">
+    BN LAST KING HACK TELEGRAM ABOUT 
+            </div>
+        </header>
+
+        <!-- System Status -->
+        <div class="terminal-window">
+            <div class="terminal-header">
+                <div class="terminal-dot dot-red"></div>
+                <div class="terminal-dot dot-yellow"></div>
+                <div class="terminal-dot dot-green"></div>
+                <span class="ml-2 text-sm">system_status.sh</span>
+            </div>
+            <div class="terminal-content">
+                <div class="digital-clock" id="digital-clock"></div>
+                <div class="mt-4">
+                    <span class="status-badge status-online">SYSTEM ONLINE</span>
+                    <span class="status-badge status-active">AI ACTIVE</span>
+                    <span class="status-badge status-premium">PREMIUM TOOLS</span>
+                    <span class="status-badge status-elite">ELITE ACCESS</span>
+                </div>
+                <div class="mt-4">
+                    <div class="text-sm mb-2">Loading Elite Scripts...</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Section -->
+        <div class="terminal-window">
+            <div class="terminal-header">
+                <div class="terminal-dot dot-red"></div>
+                <div class="terminal-dot dot-yellow"></div>
+                <div class="terminal-dot dot-green"></div>
+                <span class="ml-2 text-sm">about.py</span>
+            </div>
+            <div class="terminal-content">
+                <pre class="text-sm">
+<span class="syntax-comment"># BN Last King Hack - Elite Developer Hub</span>
+<span class="syntax-keyword">class</span> <span class="syntax-function">BNLastKingHack</span>:
+    <span class="syntax-keyword">def</span> <span class="syntax-function">__init__</span>(self):
+        self.<span class="syntax-variable">name</span> = <span class="syntax-string">"BN Last King Hack"</span>
+        self.<span class="syntax-variable">status</span> = <span class="syntax-string">"Elite Developer Hub"</span>
+        self.<span class="syntax-variable">services</span> = [
+            <span class="syntax-string">"Trading Automation"</span>,
+            <span class="syntax-string">"Python Development"</span>,
+            <span class="syntax-string">"AI Integration"</span>,
+            <span class="syntax-string">"Bot Creation"</span>
+        ]
+        self.<span class="syntax-variable">telegram</span> = <span class="syntax-string">"@BNLASTKINGHACK"</span>
+    
+    <span class="syntax-keyword">def</span> <span class="syntax-function">get_capabilities</span>(self):
+        <span class="syntax-keyword">return</span> {
+            <span class="syntax-string">"trading_tools"</span>: <span class="syntax-string">"Advanced"</span>,
+            <span class="syntax-string">"automation"</span>: <span class="syntax-string">"Elite Level"</span>,
+            <span class="syntax-string">"support"</span>: <span class="syntax-string">"24/7 Available"</span>,
+            <span class="syntax-string">"technology"</span>: <span class="syntax-string">"Cutting Edge"</span>
+        }
+</pre>
+            </div>
+        </div>
+
+        <!-- Services Section -->
+        <div class="grid md:grid-cols-2 gap-6 my-8">
+            <div class="service-card">
+                <h3 class="text-xl font-bold mb-4 text-cyan-400">
+                    <i class="fas fa-chart-line mr-2"></i>All Colour Trading Hack
+                </h3>
+                <pre class="text-sm">
+<span class="syntax-keyword">def</span> <span class="syntax-function">color_trading_system</span>():
+    <span class="syntax-variable">colors</span> = [<span class="syntax-string">'red'</span>, <span class="syntax-string">'green'</span>, <span class="syntax-string">'big'</span>, <span class="syntax-string">'small'</span>]
+    <span class="syntax-keyword">return</span> <span class="syntax-string">"Advanced prediction algorithms"</span>
+                </pre>
+                <div class="mt-4">
+                    <span class="status-badge status-premium">PREMIUM</span>
+                    <span class="status-badge status-active">REAL-TIME</span>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <h3 class="text-xl font-bold mb-4 text-magenta-400">
+                    <i class="fas fa-robot mr-2"></i>Python Scripts & Bots
+                </h3>
+                <pre class="text-sm">
+<span class="syntax-keyword">import</span> trading_bot
+<span class="syntax-keyword">from</span> bn_last_king <span class="syntax-keyword">import</span> elite_tools
+
+<span class="syntax-variable">bot</span> = trading_bot.<span class="syntax-function">TradingBot</span>()
+<span class="syntax-variable">bot</span>.<span class="syntax-function">activate_ai_mode</span>()
+                </pre>
+                <div class="mt-4">
+                    <span class="status-badge status-elite">ELITE</span>
+                    <span class="status-badge status-online">AUTO-TRADE</span>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <h3 class="text-xl font-bold mb-4 text-yellow-400">
+                    <i class="fas fa-code mr-2"></i>Injector Menu
+                </h3>
+                <pre class="text-sm">
+<span class="syntax-comment">// Advanced Injection System</span>
+<span class="syntax-keyword">const</span> <span class="syntax-variable">injector</span> = {
+    <span class="syntax-variable">target</span>: <span class="syntax-string">"trading_platform"</span>,
+    <span class="syntax-variable">mode</span>: <span class="syntax-string">"stealth"</span>,
+    <span class="syntax-variable">status</span>: <span class="syntax-string">"ready"</span>
+};
+                </pre>
+                <div class="mt-4">
+                    <span class="status-badge status-premium">STEALTH</span>
+                    <span class="status-badge status-active">UNDETECTED</span>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <h3 class="text-xl font-bold mb-4 text-green-400">
+                    <i class="fas fa-brain mr-2"></i>Logic AI + Database
+                </h3>
+                <pre class="text-sm">
+<span class="syntax-keyword">SELECT</span> * <span class="syntax-keyword">FROM</span> ai_predictions 
+<span class="syntax-keyword">WHERE</span> accuracy > <span class="syntax-string">'95%'</span>
+<span class="syntax-keyword">AND</span> status = <span class="syntax-string">'ELITE'</span>;
+
+<span class="syntax-comment">-- Neural Network Integration</span>
+                </pre>
+                <div class="mt-4">
+                    <span class="status-badge status-elite">AI POWERED</span>
+                    <span class="status-badge status-premium">BIG DATA</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technology Stack -->
+        <div class="terminal-window">
+            <div class="terminal-header">
+                <div class="terminal-dot dot-red"></div>
+                <div class="terminal-dot dot-yellow"></div>
+                <div class="terminal-dot dot-green"></div>
+                <span class="ml-2 text-sm">tech_stack.js</span>
+            </div>
+            <div class="terminal-content">
+                <pre class="text-sm">
+<span class="syntax-comment">// High Technology Stack</span>
+<span class="syntax-keyword">import</span> { 
+    <span class="syntax-variable">PythonScripts</span>,
+    <span class="syntax-variable">TradingBots</span>,
+    <span class="syntax-variable">AILogic</span>,
+    <span class="syntax-variable">DatabaseSystems</span>,
+    <span class="syntax-variable">TelegramAPI</span>
+} <span class="syntax-keyword">from</span> <span class="syntax-string">'@bn-last-king/elite-tools'</span>;
+
+<span class="syntax-keyword">const</span> <span class="syntax-variable">deployment</span> = {
+    <span class="syntax-variable">server</span>: <span class="syntax-string">"telegram_best_server"</span>,
+    <span class="syntax-variable">uptime</span>: <span class="syntax-string">"24/7"</span>,
+    <span class="syntax-variable">security</span>: <span class="syntax-string">"military_grade"</span>,
+    <span class="syntax-variable">performance</span>: <span class="syntax-string">"ultra_fast"</span>
+};
+                </pre>
+            </div>
+        </div>
+
+        <!-- Telegram Integration -->
+        <div class="terminal-window">
+            <div class="terminal-header">
+                <div class="terminal-dot dot-red"></div>
+                <div class="terminal-dot dot-yellow"></div>
+                <div class="terminal-dot dot-green"></div>
+                <span class="ml-2 text-sm">telegram_webhook.py</span>
+            </div>
+            <div class="terminal-content text-center">
+                <h2 class="text-2xl font-bold mb-6 text-cyan-400 neon-glow">
+                    <i class="fab fa-telegram-plane mr-3"></i>JOIN OFFICIAL CHANNEL
+                </h2>
+                
+                <div class="bg-red-900 border-2 border-red-500 p-4 rounded mb-6">
+                    <div class="text-red-300 font-bold mb-2">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>ANTI-SCAM WARNING
+                    </div>
+                    <p class="text-sm">
+                        Many fake channels are selling our PUBLIC hacks!<br>
+                        Only trust our OFFICIAL channel below.
+                    </p>
+                </div>
+
+                <div class="text-lg mb-6">
+                    <span class="syntax-variable">OFFICIAL_CHANNEL</span> = <span class="syntax-string">"https://t.me/BNLASTKINGHACK"</span>
+                </div>
+
+                <a href="https://t.me/BNLASTKINGHACK" class="terminal-button text-lg px-8 py-4" target="_blank">
+                    <i class="fab fa-telegram-plane mr-2"></i>JOIN NOW - OFFICIAL CHANNEL
+                </a>
+
+                <div class="mt-6 text-sm">
+                    <div class="syntax-comment">// Verify Official Channel</div>
+                    <div><span class="syntax-keyword">if</span> (channel === <span class="syntax-string">"@BNLASTKINGHACK"</span>) {</div>
+                    <div class="ml-4"><span class="syntax-variable">access</span> = <span class="syntax-string">"GRANTED"</span>;</div>
+                    <div>} <span class="syntax-keyword">else</span> {</div>
+                    <div class="ml-4"><span class="syntax-variable">warning</span> = <span class="syntax-string">"FAKE_CHANNEL"</span>;</div>
+                    <div>}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="terminal-window text-center">
+            <div class="terminal-header">
+                <div class="terminal-dot dot-red"></div>
+                <div class="terminal-dot dot-yellow"></div>
+                <div class="terminal-dot dot-green"></div>
+                <span class="ml-2 text-sm">footer.json</span>
+            </div>
+            <div class="terminal-content">
+                <pre class="text-sm">
+{
+    <span class="syntax-string">"company"</span>: <span class="syntax-string">"BN Last King Hack"</span>,
+    <span class="syntax-string">"status"</span>: <span class="syntax-string">"Elite Developer Hub"</span>,
+    <span class="syntax-string">"telegram"</span>: <span class="syntax-string">"https://t.me/BNLASTKINGHACK"</span>,
+    <span class="syntax-string">"services"</span>: [
+        <span class="syntax-string">"Premium Trading Tools"</span>,
+        <span class="syntax-string">"Python Automation"</span>,
+        <span class="syntax-string">"AI Integration"</span>,
+        <span class="syntax-string">"24/7 Support"</span>
+    ],
+    <span class="syntax-string">"message"</span>: <span class="syntax-string">"Join the Elite Developer Community"</span>
+}
+                </pre>
+                
+                <div class="mt-6">
+                    <a href="https://t.me/BNLASTKINGHACK" class="terminal-button" target="_blank">
+                        <i class="fab fa-telegram-plane mr-2"></i>Official Channel
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Matrix Rain Effect
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()'.split('');
+        const fontSize = 10;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+
+        for (let x = 0; x < columns; x++) {
+            drops[x] = 1;
+        }
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#00ff00';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters[Math.floor(Math.random() * letters.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 33);
+
+        // Digital Clock
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString() + '.' + now.getMilliseconds().toString().padStart(3, '0');
+            document.getElementById('digital-clock').textContent = `SYSTEM TIME: ${timeString}`;
+        }
+
+        setInterval(updateClock, 100);
+
+        // Resize canvas
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Console greeting
+        console.log('%cBN LAST KING HACK ', 'color: #00ff00; font-family: monospace; font-size: 16px;');
+        console.log('%c', 'color: #00ff00; font-family: monospace; font-size: 16px;');
+        console.log('%cWelcome to the Elite Developer Hub!', 'color: #00ffff; font-family: monospace; font-size: 14px;');
+        console.log('%cTelegram: https://t.me/BNLASTKINGHACK', 'color: #ffff00; font-family: monospace;');
+    </script>
 </body>
 </html>
